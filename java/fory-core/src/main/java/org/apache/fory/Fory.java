@@ -51,6 +51,7 @@ import org.apache.fory.logging.Logger;
 import org.apache.fory.logging.LoggerFactory;
 import org.apache.fory.memory.MemoryBuffer;
 import org.apache.fory.memory.MemoryUtils;
+import org.apache.fory.reflect.TypeRef;
 import org.apache.fory.resolver.ClassResolver;
 import org.apache.fory.resolver.SharedRegistry;
 import org.apache.fory.resolver.TypeChecker;
@@ -460,6 +461,34 @@ public final class Fory implements BaseFory {
   @Override
   public <T> T deserialize(ForyReadableChannel channel, Class<T> type) {
     return deserialize(channel.getBuffer(), type);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T deserialize(byte[] bytes, TypeRef<T> typeRef) {
+    Preconditions.checkNotNull(typeRef, "typeRef must not be null");
+    return deserialize(bytes, (Class<T>) typeRef.getRawType());
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T deserialize(MemoryBuffer buffer, TypeRef<T> typeRef) {
+    Preconditions.checkNotNull(typeRef, "typeRef must not be null");
+    return deserialize(buffer, (Class<T>) typeRef.getRawType());
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T deserialize(ForyInputStream inputStream, TypeRef<T> typeRef) {
+    Preconditions.checkNotNull(typeRef, "typeRef must not be null");
+    return deserialize(inputStream, (Class<T>) typeRef.getRawType());
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T deserialize(ForyReadableChannel channel, TypeRef<T> typeRef) {
+    Preconditions.checkNotNull(typeRef, "typeRef must not be null");
+    return deserialize(channel, (Class<T>) typeRef.getRawType());
   }
 
   @Override
